@@ -1,0 +1,272 @@
+@import 'tailwindcss';
+
+@custom-variant dark (&:where(.dark, .dark *));
+
+@theme {
+  --font-sans: 'Inter', ui-sans-serif, system-ui, -apple-system, 'Segoe UI',
+    Roboto, sans-serif;
+  --font-mono: 'JetBrains Mono', ui-monospace, 'SF Mono', Menlo, Consolas,
+    monospace;
+
+  --color-ink-950: #04060d;
+  --color-ink-900: #070b14;
+  --color-ink-800: #0b1020;
+  --color-ink-700: #111830;
+  --color-ink-600: #1a2340;
+
+  --shadow-glow: 0 0 40px -12px rgb(132 204 22 / 0.45);
+  --shadow-card: 0 10px 30px -12px rgb(2 6 23 / 0.5);
+}
+
+/* ------------------------------------------------------------------ */
+/* Base                                                                */
+/* ------------------------------------------------------------------ */
+
+html {
+  scroll-behavior: smooth;
+}
+
+/* Never allow page-level horizontal scrolling; use `clip` (not `hidden`) so
+   position: sticky keeps working (hidden turns ancestors into scroll containers) */
+html,
+body {
+  overflow-x: clip;
+  max-width: 100%;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+}
+
+body {
+  @apply bg-slate-50 text-slate-700 antialiased dark:bg-ink-950 dark:text-slate-300;
+  font-family: var(--font-sans);
+}
+
+::selection {
+  @apply bg-lime-400/90 text-slate-950 dark:bg-lime-400/90 dark:text-slate-950;
+}
+
+:focus-visible {
+  outline: 2px solid var(--color-lime-500);
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
+/* Thin, theme-aware scrollbar */
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: #cbd5e1;
+  border-radius: 999px;
+  border: 2px solid transparent;
+  background-clip: padding-box;
+}
+.dark ::-webkit-scrollbar-thumb {
+  background: #1e293b;
+  border: 2px solid transparent;
+  background-clip: padding-box;
+}
+
+/* ------------------------------------------------------------------ */
+/* Components / utilities                                              */
+/* ------------------------------------------------------------------ */
+
+@layer components {
+  .container-x {
+    @apply mx-auto w-full max-w-6xl px-5 sm:px-8;
+  }
+
+  .section {
+    @apply py-20 sm:py-28;
+    scroll-margin-top: 5rem;
+  }
+
+  .text-gradient {
+    @apply text-lime-600 dark:text-lime-400;
+  }
+
+  .card {
+    @apply rounded-2xl border border-slate-200/80 bg-white/80 backdrop-blur-sm transition-colors duration-300 dark:border-white/10 dark:bg-white/[0.03];
+  }
+
+  .chip {
+    @apply inline-flex items-center gap-1.5 rounded-full border border-slate-200 bg-slate-100 px-3 py-1 text-xs font-medium text-slate-600 dark:border-white/10 dark:bg-white/5 dark:text-slate-300;
+  }
+
+  .btn-primary {
+    @apply inline-flex items-center justify-center gap-2 rounded-xl bg-lime-500 px-6 py-3 text-sm font-bold text-slate-950 shadow-lg shadow-lime-500/25 transition-all duration-300 hover:-translate-y-0.5 hover:bg-lime-400 hover:shadow-lime-400/30;
+  }
+
+  .btn-secondary {
+    @apply inline-flex items-center justify-center gap-2 rounded-xl border border-slate-300 px-6 py-3 text-sm font-semibold text-slate-700 transition-all duration-300 hover:-translate-y-0.5 hover:border-lime-500 hover:text-lime-600 dark:border-white/15 dark:text-slate-200 dark:hover:border-lime-400 dark:hover:text-lime-400;
+  }
+
+  .btn-ghost {
+    @apply inline-flex items-center justify-center gap-2 rounded-xl px-4 py-2 text-sm font-medium text-slate-600 transition-colors duration-300 hover:text-lime-600 dark:text-slate-300 dark:hover:text-lime-400;
+  }
+
+  .section-eyebrow {
+    @apply mb-3 font-mono text-xs font-semibold tracking-[0.25em] text-lime-600 uppercase dark:text-lime-400;
+  }
+
+  .rotate-card {
+    @apply transition-all duration-300 hover:-translate-y-1.5 hover:shadow-card hover:dark:shadow-card;
+  }
+}
+
+/* Background utilities */
+.bg-grid {
+  background-image: linear-gradient(
+      to right,
+      rgb(148 163 184 / 0.08) 1px,
+      transparent 1px
+    ),
+    linear-gradient(to bottom, rgb(148 163 184 / 0.08) 1px, transparent 1px);
+  background-size: 44px 44px;
+}
+.dark .bg-grid {
+  background-image: linear-gradient(
+      to right,
+      rgb(148 163 184 / 0.06) 1px,
+      transparent 1px
+    ),
+    linear-gradient(to bottom, rgb(148 163 184 / 0.06) 1px, transparent 1px);
+}
+
+/* ------------------------------------------------------------------ */
+/* Reveal-on-scroll                                                    */
+/* ------------------------------------------------------------------ */
+
+@layer base {
+  .reveal {
+    opacity: 0;
+    transform: translateY(26px);
+    transition:
+      opacity 0.7s cubic-bezier(0.22, 1, 0.36, 1),
+      transform 0.7s cubic-bezier(0.22, 1, 0.36, 1);
+    will-change: opacity, transform;
+  }
+  .reveal.is-visible {
+    opacity: 1;
+    transform: none;
+    transition:
+      opacity 0.6s cubic-bezier(0.22, 1, 0.36, 1),
+      transform 0.25s ease;
+    will-change: auto;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .reveal {
+      opacity: 1;
+      transform: none;
+      transition: none;
+      will-change: auto;
+    }
+  }
+}
+
+/* ------------------------------------------------------------------ */
+/* Page transitions                                                    */
+/* ------------------------------------------------------------------ */
+
+.page-enter-active,
+.page-leave-active {
+  transition:
+    opacity 0.25s ease,
+    transform 0.25s ease;
+}
+.page-enter-from {
+  opacity: 0;
+  transform: translateY(10px);
+}
+.page-leave-to {
+  opacity: 0;
+  transform: translateY(-6px);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .page-enter-active,
+  .page-leave-active,
+  .page-enter-from,
+  .page-leave-to {
+    transition: none;
+    transform: none;
+  }
+}
+
+/* ------------------------------------------------------------------ */
+/* Skip link                                                           */
+/* ------------------------------------------------------------------ */
+
+.skip-link {
+  position: absolute;
+  left: -9999px;
+  top: 0;
+  z-index: 999;
+  @apply rounded-lg bg-lime-500 px-4 py-2 text-sm font-bold text-slate-950;
+}
+.skip-link:focus {
+  left: 16px;
+  top: 12px;
+}
+
+/* ------------------------------------------------------------------ */
+/* Blinking terminal cursor                                            */
+/* ------------------------------------------------------------------ */
+
+@keyframes blink {
+  0%,
+  55% {
+    opacity: 1;
+  }
+  56%,
+  100% {
+    opacity: 0;
+  }
+}
+.terminal-cursor {
+  animation: blink 1.1s step-end infinite;
+}
+
+@keyframes float {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+}
+.animate-float {
+  animation: float 6s ease-in-out infinite;
+}
+@media (prefers-reduced-motion: reduce) {
+  .animate-float {
+    animation: none;
+  }
+}
+/* Custom cursor: hide native cursor only while JS effect is active */
+html.custom-cursor,
+html.custom-cursor body,
+html.custom-cursor body * {
+  cursor: none !important;
+}
+
+/* Show native pointer instead of the custom cursor over interactive elements */
+html.custom-cursor.cursor-hover a,
+html.custom-cursor.cursor-hover button,
+html.custom-cursor.cursor-hover [role="button"],
+html.custom-cursor.cursor-hover summary,
+html.custom-cursor.cursor-hover label,
+html.custom-cursor.cursor-hover select,
+html.custom-cursor.cursor-hover [data-cursor] {
+  cursor: pointer !important;
+}
