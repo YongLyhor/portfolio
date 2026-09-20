@@ -13,6 +13,7 @@ const palettes = {
   rose: 'bg-rose-700',
   indigo: 'bg-indigo-700',
   cyan: 'bg-cyan-700',
+  lime: 'bg-lime-600',
 }
 
 const paletteClass = computed(() => palettes[props.project.tone] || palettes.blue)

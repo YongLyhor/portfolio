@@ -10,6 +10,38 @@ export const projectFilters = [
 
 export const projects = [
   {
+    slug: 'portfolio-yong-lyhor',
+    title: 'YONG Lyhor — Portfolio',
+    tagline:
+      'Single-page developer portfolio with live projects, achievements and a working contact form.',
+    categories: ['Full Stack', 'Data Engineering'],
+    tone: 'lime',
+    featured: true,
+    github: 'https://github.com/YongLyhor/portfolio',
+    demo: 'https://yong-lyhor.vercel.app',
+    image: '/projects/portfolio.jpg',
+    overview:
+      'The website you are looking at right now. A single-page Vue 3 portfolio that brings together my projects, experience, certificates, achievements and a production contact form backed by Resend — deployed continuously to Vercel.',
+    problem:
+      'A developer portfolio should present work clearly while actually demonstrating real front-end and deployment skills — not just a list of links.',
+    solution:
+      'Build it as a polished single-page app in Vue 3 + Vite with Tailwind CSS: scroll-spy navigation, custom cursor, live project data, a Resend-powered contact endpoint and full static deployment on Vercel.',
+    architecture: null,
+    technologies: ['Vue 3', 'Vite', 'Tailwind CSS', 'JavaScript', 'Resend', 'Vercel'],
+    features: [
+      'Single-page scroll-spy navigation',
+      'Custom follow-dot cursor',
+      'Live project showcase with local preview images',
+      'Working contact form via Resend API',
+      'Dark / light themes',
+      'Optimized static bundle deployed to Vercel',
+    ],
+    challenges: [
+      'Keeping the sticky navbar and anchor scrolling smooth across sections',
+      'Wiring a serverless email endpoint so the form works in production',
+    ],
+  },
+  {
     slug: 'building-management-system',
     title: 'Building Management System',
     tagline:
